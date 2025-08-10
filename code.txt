@@ -1,2 +1,17 @@
-Def Solution:
-  retuern hi praticvhhe
+        n = int(input1)
+        # Safety: handle empty
+        if n == 0 or not input2:
+            return []
+
+        # Compute each player's maximum attainable points
+        max_attainable = []
+        for i in range(n):
+            row = input2[i]
+            wins = row.count(1)
+            remaining = row.count(2)
+            max_attainable.append(wins + remaining)
+
+        # Find the global maximum and mark players who can reach it
+        best = max(max_attainable) if max_attainable else 0
+        return [1 if p == best else 0 for p in max_attainable]
+# Read only region end
