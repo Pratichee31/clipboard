@@ -1,2 +1,2 @@
-This file is automatically created by copy sync.
-You can edit this file and start copy paste
+Def Solution:
+  retuern hi praticvhhe
