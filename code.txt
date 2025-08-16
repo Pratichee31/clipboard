@@ -1,22 +1,28 @@
-def findLongestRegex(x, y, z):
-    n = len(x)
-    # Find the last position where z[i] is different from both x[i] and y[i]
-    k = -1
-    for i in range(n):
-        if z[i] != x[i] and z[i] != y[i]:
-            k = i
+pre_pos = all_occurrences(s, pre) if lp > 0 else list(range(n))  # starts 0..n-1
+# Build array of best end index (exclusive) for suffix starting at each j
+# best_end[j] = j + ls if s[j:].startswith(suf) else -1
+if ls == 0:
+# empty suffix: from any threshold p we can end at n
+maxEndFrom = [n] * (n + 1)
+else:
+best_end = [-1] * (n + 1)
+for j in all_occurrences(s, suf):
+best_end[j] = max(best_end[j], j + ls)
 
-    if k == -1:
-        return "-1"
+# suffix max from-right: max end among starts >= p
+maxEndFrom = [-1] * (n + 1)
+cur = -1
+for p in range(n, -1, -1):
+if p < n and best_end[p] > cur:
+cur = best_end[p]
+maxEndFrom[p] = cur
 
-    ALL = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-    FULL = "[" + ALL + "]"            # length 28
-    # At index k we exclude z[k]
-    exclude_char = z[k]
-    without = "[" + "".join(c for c in ALL if c != exclude_char) + "]"  # length 27
+ans = -1
+for i in pre_pos:
+thr = i + lp                   # suffix must start at/after this
+if thr <= n and maxEndFrom[thr] != -1:
+cand = maxEndFrom[thr] - i
+if cand > ans:
+ans = cand
 
-    # Build answer: FULL everywhere, WITHOUT at index k (the last valid index)
-    parts = []
-    for i in range(n):
-        parts.append(without if i == k else FULL)
-    return "".join(parts)
+return ans
