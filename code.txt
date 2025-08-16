@@ -1,17 +1,22 @@
-        n = int(input1)
-        # Safety: handle empty
-        if n == 0 or not input2:
-            return []
+def findLongestRegex(x, y, z):
+    n = len(x)
+    # Find the last position where z[i] is different from both x[i] and y[i]
+    k = -1
+    for i in range(n):
+        if z[i] != x[i] and z[i] != y[i]:
+            k = i
 
-        # Compute each player's maximum attainable points
-        max_attainable = []
-        for i in range(n):
-            row = input2[i]
-            wins = row.count(1)
-            remaining = row.count(2)
-            max_attainable.append(wins + remaining)
+    if k == -1:
+        return "-1"
 
-        # Find the global maximum and mark players who can reach it
-        best = max(max_attainable) if max_attainable else 0
-        return [1 if p == best else 0 for p in max_attainable]
-# Read only region end
+    ALL = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+    FULL = "[" + ALL + "]"            # length 28
+    # At index k we exclude z[k]
+    exclude_char = z[k]
+    without = "[" + "".join(c for c in ALL if c != exclude_char) + "]"  # length 27
+
+    # Build answer: FULL everywhere, WITHOUT at index k (the last valid index)
+    parts = []
+    for i in range(n):
+        parts.append(without if i == k else FULL)
+    return "".join(parts)
